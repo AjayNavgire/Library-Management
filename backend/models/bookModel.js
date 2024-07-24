@@ -8,6 +8,7 @@ const bookSchema = new mongoose.Schema({
         minLength: [4, "Title should have more than 4 characters"]
     },
     stock: { type: Number },
+    balance: { type: Number},
     author: {
         type: String,
         required: [true, "Please Enter Book Author"],

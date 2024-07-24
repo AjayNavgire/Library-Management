@@ -9,8 +9,8 @@ const addDTO = Joi.object({
     title: Joi.string().required().min(4).max(30),
     author: Joi.string().required().min(4).max(30),
     genre: Joi.string().required().min(4).max(30),
-    stock: Joi.number().required().min(0),
   }).required(),
+  user_id : Joi.object().required()
 });
 
 const updateDTO = Joi.object({
@@ -22,12 +22,26 @@ const updateDTO = Joi.object({
     title: Joi.string().optional().min(4).max(30),
     author: Joi.string().optional().min(4).max(30),
     genre: Joi.string().optional().min(4).max(30),
-    stock: Joi.number().optional().min(0),
   }).optional(),
+  user_id : Joi.object().optional()
 });
+
+const renewDTO = Joi.object({
+  book_info: Joi.object({
+    isRenewed: Joi.boolean().required()
+  })
+})
+
+const returnDTO = Joi.object({
+  book_info: Joi.object({
+    isReturned: Joi.boolean().required()
+  })
+})
 
 
 module.exports = {
     addDTO,
     updateDTO,
+    renewDTO,
+    returnDTO
 };

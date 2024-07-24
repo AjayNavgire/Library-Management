@@ -14,6 +14,8 @@ exports.addBook = catchAsyncErrors(async (req, res, next) => {
         return next(new ErrorHandler(errors, 403));
     };
 
+    req.body.balance = req.body.stock
+
     const book = await Book.create({ ...req.body });
 
     res.status(201).json({
