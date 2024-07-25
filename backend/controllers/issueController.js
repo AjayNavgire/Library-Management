@@ -87,6 +87,12 @@ exports.returnwBook = catchAsyncErrors(async (req, res, next) => {
     returnBook.book_info.isReturned = req.body.book_info.isReturned;
     returnBook.save();
 
+    const book = await Book.findById(returnBook.book_info.id);
+    if(book.balance < book.stock){
+        book.balance = book.balance + 1;
+        book.save();
+    }
+    
     res.status(201).json({
         success: true,
         message: "Book Returned Successfully",

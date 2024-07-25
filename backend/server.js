@@ -2,7 +2,7 @@ const app = require("./app");
 
 const dotenv = require("dotenv");
 const connectDatabase = require("./config/database");
-
+const {initializeRedisClient }  = require('./config/redisClient');
 
 // Handling Uncaught Exception
 process.on("uncaughtException", (err) => {
@@ -11,20 +11,18 @@ process.on("uncaughtException", (err) => {
     process.exit(1)
 })
 
-
 // Config
 dotenv.config({ path: "config/config.env" })
-
 
 // Connecting to database
 connectDatabase();
 
+// Connecting to redis
+initializeRedisClient()
 
 const server = app.listen(process.env.PORT, () => {
-
     console.log(`Server is working on http://localhost:${process.env.PORT}`)
 })
-
 
 // Unhandled Promise Rejection
 process.on("unhandledRejection", err => {

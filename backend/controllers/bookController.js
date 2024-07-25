@@ -2,11 +2,11 @@ const ErrorHandler = require("../utils/errorhandler");
 const catchAsyncErrors = require("../middleware/catchAsyncError");
 const Book = require("../models/bookModel");
 const { addDTO, updateDTO } = require("../dto/book");
-
+const ApiFeatures = require("../utils/apifeatures");
+// const redisClient = require('../config/redisClient');
 const requestValidator = require("../utils/request-validator");
 
 // Add book 
-
 exports.addBook = catchAsyncErrors(async (req, res, next) => {
     const errors = requestValidator(addDTO, req.body);
 
@@ -25,7 +25,7 @@ exports.addBook = catchAsyncErrors(async (req, res, next) => {
 
 })
 
-// get Single Order
+// get Single Book
 exports.getSingleBook = catchAsyncErrors(async (req, res, next) => {
 
     const book = await Book.findById(req.params.id)
@@ -37,6 +37,26 @@ exports.getSingleBook = catchAsyncErrors(async (req, res, next) => {
     res.status(200).json({
         success: true,
         book,
+    });
+});
+
+// get All Book
+exports.getAllBook = catchAsyncErrors(async (req, res, next) => {
+
+    const resultPerPage = 5;
+    const bookCount = await Book.countDocuments();
+
+    const apifeatures = new ApiFeatures(Book.find(), req.query)
+    .search()
+    .filter()
+    .pagination(resultPerPage)
+
+    const book = await apifeatures.query;
+
+    res.status(200).json({
+        success: true,
+        book,
+        bookCount
     });
 });
 
