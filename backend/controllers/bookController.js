@@ -16,6 +16,12 @@ exports.addBook = catchAsyncErrors(async (req, res, next) => {
 
     req.body.balance = req.body.stock
 
+    const duplicateBook = await Book.find({ title: req.body.title });
+
+    if (duplicateBook.length > 0) {
+        return next(new ErrorHandler("Book is already available in Library. Please update stock", 404));
+    }
+
     const book = await Book.create({ ...req.body });
 
     res.status(201).json({
@@ -43,13 +49,13 @@ exports.getSingleBook = catchAsyncErrors(async (req, res, next) => {
 // get All Book
 exports.getAllBook = catchAsyncErrors(async (req, res, next) => {
 
-    const resultPerPage = 5;
+    const resultPerPage = req.query.limit || 5;
     const bookCount = await Book.countDocuments();
 
     const apifeatures = new ApiFeatures(Book.find(), req.query)
-    .search()
-    .filter()
-    .pagination(resultPerPage)
+        .search()
+        .filter()
+        .pagination(resultPerPage);
 
     const book = await apifeatures.query;
 
@@ -78,4 +84,21 @@ exports.updateBook = catchAsyncErrors(async (req, res, next) => {
         success: true,
         book
     })
+})
+
+// delete Book
+exports.deleteBook = catchAsyncErrors(async (req, res, next) => {
+    const book = await Book.findById(req.params.id)
+
+    if (!book) {
+        return next(new ErrorHandler("Book not found", 404));
+    }
+
+    await book.remove();
+
+    res.status(200).json({
+        success: true,
+        messesage: "Book Deleted Successfully"
+
+    });
 })

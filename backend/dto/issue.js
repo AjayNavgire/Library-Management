@@ -38,10 +38,18 @@ const returnDTO = Joi.object({
   })
 })
 
+const fineDTO = Joi.object({
+  book_info: Joi.object({
+    isReturned: Joi.boolean().optional(),
+    isReturned: Joi.boolean().required()
+  })
+})
+
 
 module.exports = {
     addDTO,
     updateDTO,
     renewDTO,
-    returnDTO
+    returnDTO,
+    fineDTO
 };
