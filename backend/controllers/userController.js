@@ -79,16 +79,7 @@ exports.getAllUser = catchAsyncErrors(async (req, res, next) => {
     let { role } = req.query;
     let query = {}
 
-    if (userRole === "procurement manager") {
-        query._procurement = new mongoose.Types.ObjectId(`${_id}`);
-    };
-    if (userRole === "inspection manager") {
-        query._inspection = new mongoose.Types.ObjectId(`${_id}`);
-    };
-    if (role) {
-        query.role = role
-    }
-
+   
     const user = await User.find(query);
 
     if (!user) {

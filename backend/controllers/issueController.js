@@ -53,7 +53,6 @@ exports.getAllIssuedBook = catchAsyncErrors(async (req, res, next) => {
     });
 })
 
-
 // Take a fine 
 exports.bookFine = catchAsyncErrors(async (req, res, next)=>{
 
@@ -96,7 +95,7 @@ exports.renewBook = catchAsyncErrors(async (req, res, next) => {
     const returnDate = parsedDate.format('ddd MMM DD YYYY');
     const todayDate = date.format('ddd MMM DD YYYY');
 
-    if (renewBook && returnDate < todayDate) {
+    if (renewBook && returnDate >= todayDate) {
         return next(new ErrorHandler(`Book is overdued from date : ${returnDate}`, 200));
     }
 
@@ -113,7 +112,7 @@ exports.renewBook = catchAsyncErrors(async (req, res, next) => {
 });
 
 // return book
-exports.returnwBook = catchAsyncErrors(async (req, res, next) => {
+exports.returnBook = catchAsyncErrors(async (req, res, next) => {
 
     const errors = requestValidator(returnDTO, req.body);
 
@@ -128,7 +127,7 @@ exports.returnwBook = catchAsyncErrors(async (req, res, next) => {
     const returnDate = parsedDate.format('ddd MMM DD YYYY');
     const todayDate = date.format('ddd MMM DD YYYY');
 
-    if (returnBook && returnDate < todayDate) {
+    if (returnBook && returnDate >= todayDate) {
         return next(new ErrorHandler(`Book is overdued from date : ${returnDate}`, 200));
     };
     returnBook.book_info.isReturned = req.body.book_info.isReturned;
