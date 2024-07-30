@@ -54,8 +54,6 @@ exports.login = catchAsyncErrors(async (req, res, next) => {
     sendToken(user, 200, res)
 })
 
-
-
 // Get single user
 exports.getSingleUser = catchAsyncErrors(async (req, res, next) => {
 

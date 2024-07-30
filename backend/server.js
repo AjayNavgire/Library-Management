@@ -4,12 +4,7 @@ const dotenv = require("dotenv");
 const connectDatabase = require("./config/database");
 const {initializeRedisClient }  = require('./config/redisClient');
 
-// Handling Uncaught Exception
-process.on("uncaughtException", (err) => {
-    console.log(`Error: ${err.message}`);
-    console.log(`Shutting down the server due to Uncaught Exception`)
-    process.exit(1)
-})
+
 
 // Config
 dotenv.config({ path: "config/config.env" })
